@@ -14,10 +14,12 @@
     <meta name="theme-color" content="#ffffff">
     <title>Web Hosting Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Monomaniac+One&display=swap" rel="stylesheet">
 </head>
 <body>
-<div id="app">
-    sss
-</div>
+<div id="app"></div>
+<script src="{{ mix('js/app.js') }}"></script>
 </body>
 </html>

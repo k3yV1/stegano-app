@@ -1,6 +1,9 @@
 import './bootstrap';
 import Vue from 'vue';
+import App from "../vue/App.vue";
+import router from "../vue/router";
 
-const app = new Vue({
-    el: '#app',
-});
+new Vue({
+    router,
+    render: h => h(App),
+}).$mount('#app');
