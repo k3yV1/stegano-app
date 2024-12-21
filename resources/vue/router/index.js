@@ -7,6 +7,7 @@ import MainLayout from "../layouts/MainLayout.vue";
 import Login from "../views/Auth/Login.vue";
 import Registry from "../views/Auth/Registry.vue";
 import EncodePage from "../views/Pages/EncodePage.vue";
+import DecodePage from "../views/Pages/DecodePage.vue";
 
 Vue.use(VueRouter);
 
@@ -43,6 +44,15 @@ const routes = [
                 path: 'encode',
                 name: 'encode',
                 component: EncodePage,
+                props: true,
+                meta: {
+
+                }
+            },
+            {
+                path: 'decode',
+                name: 'decode',
+                component: DecodePage,
                 props: true,
                 meta: {
 

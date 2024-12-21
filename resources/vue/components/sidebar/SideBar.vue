@@ -9,6 +9,11 @@
                     <span>Web Hosting</span>
                 </div>
             </div>
+            <div class="links">
+                <router-link :to="{ name: 'encode' }">Кодування</router-link>
+                <router-link :to="{ name: 'decode' }">Декодування</router-link>
+<!--                <router-link :to="{ name: 'statistics' }">Статистика</router-link>-->
+            </div>
         </div>
         <div class="sidebar-footer">
             <div class="footer__text">
@@ -63,6 +68,31 @@ export default {
                     }
                 }
             }
+
+            .links {
+                opacity: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                font-family: Montserrat, sans-serif;
+                font-weight: 500;
+                font-size: 18px;
+                margin-top: 100px;
+
+                a {
+                    color: #fff;
+                    text-decoration: none;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+
+                .router-link-active {
+                    color: #fff;
+                    text-decoration: underline;
+                }
+            }
         }
 
         .sidebar-footer {
@@ -89,6 +119,10 @@ export default {
                         opacity: 1;
                     }
                 }
+            }
+
+            .links {
+                opacity: 1;
             }
 
             .sidebar-footer {
