@@ -1,34 +1,59 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
+import AuthLayout from "../layouts/AuthLayout.vue";
+import MainLayout from "../layouts/MainLayout.vue";
+
 import Login from "../views/Auth/Login.vue";
 import Registry from "../views/Auth/Registry.vue";
+import EncodePage from "../views/Pages/EncodePage.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
     {
-        path: '/login',
-        name: 'login',
-        component: Login,
-        props: true,
-        meta: {
+        path: '/auth',
+        component: AuthLayout,
+        children: [
+            {
+                path: 'login',
+                name: 'login',
+                component: Login,
+                props: true,
+                meta: {
 
-        }
+                }
+            },
+            {
+                path: 'registry',
+                name: 'registry',
+                component: Registry,
+                props: true,
+                meta: {
+
+                }
+            },
+        ]
     },
     {
-        path: '/registry',
-        name: 'registry',
-        component: Registry,
-        props: true,
-        meta: {
+        path: '/',
+        component: MainLayout,
+        children: [
+            {
+                path: 'encode',
+                name: 'encode',
+                component: EncodePage,
+                props: true,
+                meta: {
 
-        }
+                }
+            }
+        ]
     }
 ];
 
 const router = new VueRouter({
-    mode: 'history', // Вмикає режим історії (чисті URL без #)
+    mode: 'history',
     routes,
 });
 
