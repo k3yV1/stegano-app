@@ -18,11 +18,8 @@
                         <div class="form-preview image-preview" v-if="imageData.length > 0">
                             <img class="preview" :src="imageData" alt="">
                         </div>
-                        <div class="form-textarea">
-                            <textarea placeholder="Введіть повідомлення"></textarea>
-                        </div>
                         <div class="form__button">
-                            <button>Декодувати</button>
+                            <button @click="decodeImage">Декодувати</button>
                         </div>
                     </div>
                 </div>
@@ -53,13 +50,16 @@
 </template>
 
 <script>
+import DecodeService from "../../services/decode.service";
 export default {
     name: "Decode",
 
     data() {
         return {
-            imageData: "",
-            fileName: "",
+            imageData: "", // Данные изображения в формате base64
+            fileName: "",  // Имя файла
+            decodedMessage: "", // Декодированное сообщение
+            status: "", // Статус декодирования
         };
     },
 
@@ -77,6 +77,18 @@ export default {
                 reader.readAsDataURL(file);
             }
         },
+
+        async decodeImage() {
+            try {
+                const decodeData = {
+                    imageData: this.imageData
+                }
+                const response = await DecodeService.getDecodeImageService(decodeData);
+                console.log("response: ", response)
+            } catch (e) {
+                console.log(e);
+            }
+        }
     }
 }
 </script>
@@ -160,30 +172,8 @@ export default {
                         }
                     }
 
-                    .form-textarea {
-                        display: flex;
-                        textarea {
-                            font-family: Montserrat, sans-serif;
-                            font-weight: 400;
-                            font-size: 14px;
-                            outline: none;
-                            padding: 5px;
-                            width: 100%;
-                            height: 105px;
-                            border: 1px solid rgba(224, 224, 224, 0.5);
-                            border-radius: 5px;
-
-                            &::placeholder {
-                                font-family: Montserrat, sans-serif;
-                                font-weight: 400;
-                                font-size: 12px;
-                            }
-                        }
-                    }
-
                     .form__button {
                         display: flex;
-                        margin-top: 40px;
                         button {
                             cursor: pointer;
                             font-family: Montserrat, sans-serif;

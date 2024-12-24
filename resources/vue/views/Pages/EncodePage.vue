@@ -13,27 +13,27 @@
                     <div class="form">
                         <div class="form-input">
                             <label for="uploadFile" class="file-box">Upload file</label>
-                            <input type="file" id="uploadFile" class="uploadFile"  @change="previewImage" placeholder="Upload file" accept="image/*">
+                            <input type="file" id="uploadFile" class="uploadFile" @change="previewImage" placeholder="Upload file" accept="image/*">
                         </div>
                         <div class="form-preview image-preview" v-if="imageData.length > 0">
                             <img class="preview" :src="imageData" alt="">
                         </div>
                         <div class="form-textarea">
-                            <textarea placeholder="Введіть повідомлення"></textarea>
+                            <textarea placeholder="Введіть повідомлення" v-model="message"></textarea>
                         </div>
-                        <div class="form__button">
-                            <button>Кодувати</button>
+                        <div class="form__button" @click="createEncode">
+                            <button :disabled="!isValidForm">Кодувати</button>
                         </div>
                     </div>
                 </div>
-                <div class="right-side">
+                <div class="right-side" v-if="encodedImageUrl">
                     <div class="download-form">
                         <div class="picture">
 <!--                            Тут в ответе будет картинка закодированная-->
-<!--                            <img src="" alt="">-->
+                            <img :src="encodedImageUrl" alt="Encoded Image">
                         </div>
                         <div class="download-btn">
-                            <button>Завантажити</button>
+                            <button @click="downloadFile">Завантажити</button>
                         </div>
                     </div>
                 </div>
@@ -43,6 +43,8 @@
 </template>
 
 <script>
+
+import EncodeService from "../../services/encode.service";
 export default {
     name: "Encode",
 
@@ -50,7 +52,17 @@ export default {
         return {
             imageData: "",
             fileName: "",
+            message: "",
+            encodedImageUrl: ""
         };
+    },
+
+    computed: {
+        isValidForm() {
+            const valid = this.imageData !== '' && this.fileName !== '' && this.message !== '';
+            console.log('Form valid:', valid);
+            return valid;
+        }
     },
 
     methods: {
@@ -67,6 +79,37 @@ export default {
                 reader.readAsDataURL(file);
             }
         },
+
+        async createEncode() {
+            try {
+                const encodeData = {
+                    file: {
+                      fileName: this.fileName,
+                      fileContent: this.imageData.split(",")[1]
+                    },
+                    message: this.message
+                }
+
+                const response = await EncodeService.createEncodeImageService(encodeData);
+                console.log("response: ", response);
+                this.encodedImageUrl = response.file_url;
+            } catch (e) {
+                console.log(e);
+            }
+        },
+
+        downloadFile() {
+            if (this.encodedImageUrl) {
+                const link = document.createElement('a');
+                link.href = this.encodedImageUrl;
+                link.setAttribute('download', 'encoded_image.png');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else {
+                console.error('Изображение не найдено для скачивания');
+            }
+        }
     }
 }
 </script>
@@ -191,6 +234,12 @@ export default {
                                 opacity: 0.7;
                             }
                         }
+
+                        button:disabled {
+                            background-color: #636363;
+                            cursor: not-allowed;
+
+                        }
                     }
                 }
             }
@@ -203,8 +252,12 @@ export default {
                     gap: 20px;
                     .picture {
                         width: 100%;
-                        height: 400px;
-                        background-color: #4a5568;
+                        height: auto;
+
+                        img {
+                            width: 100%;
+                            height: 100%;
+                        }
                     }
 
                     .download-btn {
